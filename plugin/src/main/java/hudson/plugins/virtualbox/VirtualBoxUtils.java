@@ -77,6 +77,7 @@ public final class VirtualBoxUtils {
       manager.disconnect(vbox);
     }
 
+    version = version.substring(0, 3);
     log.logInfo("Creating connection to VirtualBox version " + version);
 
     switch (version) {

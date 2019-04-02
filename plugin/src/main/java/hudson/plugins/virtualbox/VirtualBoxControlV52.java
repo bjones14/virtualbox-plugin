@@ -82,13 +82,13 @@ public final class VirtualBoxControlV52 implements VirtualBoxControl {
         }
 
         // check to see if active machine limit has reached, and wait until available if it has
-        Boolean available = getActiveMachineLimitReached(vbMachine.getHost());
+        Boolean available = !getActiveMachineLimitReached(vbMachine.getHost());
         while (!available) {
             log.logInfo("active machine limit reached, waiting for availability...");
             try {
-                wait(1000);
+                wait(10000);
             } catch (InterruptedException e) {}
-            available = getActiveMachineLimitReached(vbMachine.getHost());
+            available = !getActiveMachineLimitReached(vbMachine.getHost());
         }
 
         // states diagram: https://www.virtualbox.org/sdkref/_virtual_box_8idl.html#80b08f71210afe16038e904a656ed9eb
