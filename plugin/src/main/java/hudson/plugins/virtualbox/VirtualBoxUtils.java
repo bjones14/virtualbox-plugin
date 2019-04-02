@@ -39,12 +39,12 @@ public final class VirtualBoxUtils {
 
   /**
    * Cache connections to VirtualBox hosts
-   * TODO: keep the connections alive with a noop
+   * TODO: keep the connections alive with a no-op
    */
-  private static HashMap<String, VirtualBoxControl> vboxControls = new HashMap<String, VirtualBoxControl>();
+  private static HashMap<String, VirtualBoxControl> vboxControls = new HashMap<>();
 
   private synchronized static VirtualBoxControl getVboxControl(VirtualBoxCloud host, VirtualBoxLogger log) {
-    VirtualBoxControl vboxControl = (VirtualBoxControl)vboxControls.get(host.toString());
+    VirtualBoxControl vboxControl = vboxControls.get(host.toString());
     if (null != vboxControl) {
       if (vboxControl.isConnected()) {
         return vboxControl;
@@ -78,23 +78,28 @@ public final class VirtualBoxUtils {
     }
 
     log.logInfo("Creating connection to VirtualBox version " + version);
-    if (version.startsWith("5.1")) {
-      vboxControl = new VirtualBoxControlV51(host.getUrl(), host.getUsername(), host.getPassword());
-    } else if (version.startsWith("5.0")) {
-      vboxControl = new VirtualBoxControlV50(host.getUrl(), host.getUsername(), host.getPassword());
-    } else if (version.startsWith("4.3")) {
-      vboxControl = new VirtualBoxControlV43(host.getUrl(), host.getUsername(), host.getPassword());
-    } else if (version.startsWith("4.2")) {
-      vboxControl = new VirtualBoxControlV42(host.getUrl(), host.getUsername(), host.getPassword());
-    } else if (version.startsWith("4.1")) {
-      vboxControl = new VirtualBoxControlV41(host.getUrl(), host.getUsername(), host.getPassword());
-    } else if (version.startsWith("4.0")) {
-      vboxControl = new VirtualBoxControlV40(host.getUrl(), host.getUsername(), host.getPassword());
-    } else if (version.startsWith("3.")) {
-      vboxControl = new VirtualBoxControlV31(host.getUrl(), host.getUsername(), host.getPassword());
-    } else {
-      log.logError("VirtualBox version " + version + " not supported.");
-      throw new UnsupportedOperationException("VirtualBox version " + version + " not supported.");
+
+    switch (version) {
+      case "6.0": vboxControl = new VirtualBoxControlV60(host.getUrl(), host.getUsername(), host.getPassword());
+                  break;
+      case "5.2": vboxControl = new VirtualBoxControlV52(host.getUrl(), host.getUsername(), host.getPassword());
+                  break;
+      case "5.1": vboxControl = new VirtualBoxControlV51(host.getUrl(), host.getUsername(), host.getPassword());
+                  break;
+      case "5.0": vboxControl = new VirtualBoxControlV50(host.getUrl(), host.getUsername(), host.getPassword());
+                  break;
+      case "4.3": vboxControl = new VirtualBoxControlV43(host.getUrl(), host.getUsername(), host.getPassword());
+                  break;
+      case "4.2": vboxControl = new VirtualBoxControlV42(host.getUrl(), host.getUsername(), host.getPassword());
+                  break;
+      case "4.1": vboxControl = new VirtualBoxControlV41(host.getUrl(), host.getUsername(), host.getPassword());
+                  break;
+      case "4.0": vboxControl = new VirtualBoxControlV40(host.getUrl(), host.getUsername(), host.getPassword());
+                  break;
+      case "3.":  vboxControl = new VirtualBoxControlV31(host.getUrl(), host.getUsername(), host.getPassword());
+                  break;
+      default:    log.logError("VirtualBox version " + version + " not supported.");
+                  throw new UnsupportedOperationException("VirtualBox version " + version + " not supported.");
     }
 
     log.logInfo("Connected to VirtualBox version " + version + " on host " + host.getUrl());

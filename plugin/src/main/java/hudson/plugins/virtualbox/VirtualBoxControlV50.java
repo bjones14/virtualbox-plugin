@@ -46,6 +46,27 @@ public final class VirtualBoxControlV50 implements VirtualBoxControl {
     }
 
     /**
+     * This method will check to see if the active machine limit has been reached.
+     *
+     * @param host VirtualBox host
+     * @return a boolean representing if the active machine limit has been reached
+     */
+    public synchronized boolean getActiveMachineLimitReached(VirtualBoxCloud host) {
+        Integer activeMachineCount = 0;
+        for (IMachine machine : vbox.getMachines()) {
+            switch (machine.getState()) {
+                case Aborted:
+                case PoweredOff:
+                case Saved:
+                    break;
+                default:
+                    activeMachineCount++;
+            }
+        }
+        return activeMachineCount >= host.getActiveMachineLimit();
+    }
+
+    /**
      * Starts specified VirtualBox virtual machine.
      *
      * @param vbMachine virtual machine to start

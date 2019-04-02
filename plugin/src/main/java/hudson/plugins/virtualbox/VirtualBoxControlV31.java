@@ -69,6 +69,8 @@ public final class VirtualBoxControlV31 implements VirtualBoxControl {
     return result;
   }
 
+  // TODO figure out how to support active machine limit for this version of VBox
+
   /**
    * Starts specified VirtualBox virtual machine.
    *
