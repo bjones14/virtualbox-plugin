@@ -3,7 +3,7 @@ VirtualBox Plugin
 
 This plugin manage slaves using VirtualBox vms with its WebServer API.
 
-It current supports VirtualBox versions 3 to 6.
+It currently supports VirtualBox versions 3 to 6.
 
 Sources
 -------
